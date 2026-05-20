@@ -1,0 +1,24 @@
+/* Custom page transition styles and responsive viewport overlays */
+
+.page-transition-wrapper {
+  animation: fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Scrollbar behaviors for page views */
+.app-content::-webkit-scrollbar {
+  width: 6px;
+}
+.app-content::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 3px;
+}
+.app-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Custom responsiveness for side-by-side grids on dashboard and admin views */
+@media (max-width: 900px) {
+  .scanner-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
