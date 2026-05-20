@@ -273,86 +273,192 @@ export default function DashboardPage({ setActivePage }) {
       {/* ── Achievements + Challenges ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }} className="scanner-layout">
 
-        {/* Achievements */}
-        <div className="glass-panel" style={{ padding: '22px', animation: 'fadeSlideUp 0.5s ease 0.35s both' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <span className="hud-font" style={{ fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '1.5px' }}>BIOMETRIC ACHIEVEMENTS</span>
-            <span style={{ fontSize: '10px', color: 'var(--primary)', cursor: 'pointer', fontFamily: 'var(--font-hud)', display: 'flex', alignItems: 'center', gap: '4px' }} onClick={() => setActivePage('analytics')}>
-              VIEW ALL <ChevronRight size={11} />
-            </span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {achievements.slice(0, 4).map((ach, i) => (
-              <div key={ach.id} style={{
-                padding: '12px 14px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px',
-                background: ach.unlocked ? 'linear-gradient(90deg, rgba(168,85,247,0.08), rgba(168,85,247,0.03))' : 'rgba(0,0,0,0.15)',
-                border: ach.unlocked ? '1px solid rgba(168,85,247,0.2)' : '1px solid rgba(255,255,255,0.04)',
-                animation: `fadeSlideUp 0.4s ease ${0.4 + i * 0.07}s both`,
-                position: 'relative', overflow: 'hidden'
-              }}>
-                {ach.unlocked && <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px', background: 'linear-gradient(180deg, var(--primary), var(--secondary))', borderRadius: '0 2px 2px 0', boxShadow: '0 0 8px var(--primary-glow)' }} />}
-                <div style={{
-                  width: '34px', height: '34px', borderRadius: '10px', flexShrink: 0,
-                  background: ach.unlocked ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'rgba(255,255,255,0.05)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: ach.unlocked ? '0 0 12px var(--primary-glow)' : 'none'
-                }}>
-                  {ach.unlocked ? <Trophy size={15} style={{ color: 'white' }} /> : <Lock size={14} style={{ color: 'var(--text-muted)' }} />}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: '13px', color: ach.unlocked ? 'var(--text-primary)' : 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ach.title}</div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '1px' }}>{ach.description}</div>
-                </div>
-                {ach.unlocked
-                  ? <span style={{ fontSize: '9px', color: 'var(--secondary)', fontFamily: 'var(--font-hud)', letterSpacing: '0.5px', flexShrink: 0 }}>✓ UNLOCKED</span>
-                  : <span style={{ fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)', flexShrink: 0 }}>LOCKED</span>}
+        {/* ═══ Achievements ═══ */}
+        <div className="glass-panel" style={{ padding: '22px', animation: 'fadeSlideUp 0.5s ease 0.35s both', position: 'relative', overflow: 'hidden' }}>
+          {/* decorative corner glow */}
+          <div style={{ position: 'absolute', top: '-25px', right: '-25px', width: '100px', height: '100px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%)', pointerEvents: 'none' }} />
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'linear-gradient(135deg, var(--primary), var(--secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 10px var(--primary-glow)' }}>
+                <Trophy size={12} style={{ color: 'white' }} />
               </div>
-            ))}
+              <span className="hud-font" style={{ fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '1.5px' }}>BIOMETRIC ACHIEVEMENTS</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ padding: '3px 8px', borderRadius: '99px', background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.25)', fontSize: '9px', color: 'var(--primary)', fontFamily: 'var(--font-hud)' }}>
+                {achievements.filter(a => a.unlocked).length}/{achievements.length}
+              </span>
+              <span style={{ fontSize: '10px', color: 'var(--primary)', cursor: 'pointer', fontFamily: 'var(--font-hud)', display: 'flex', alignItems: 'center', gap: '3px' }} onClick={() => setActivePage('analytics')}>
+                VIEW ALL <ChevronRight size={11} />
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {achievements.slice(0, 4).map((ach, i) => {
+              const xpReward = ach.unlocked ? [50, 75, 100, 120][i] || 50 : '??';
+              const achColors = ['#8b5cf6', '#10b981', '#eab308', '#f43f5e'];
+              const achColor = achColors[i % achColors.length];
+              const ringR = 14, ringCirc = 2 * Math.PI * ringR;
+              const ringPct = ach.unlocked ? 100 : [40, 60, 20, 80][i] || 30;
+
+              return (
+                <div key={ach.id} style={{
+                  padding: '14px 16px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '14px',
+                  background: ach.unlocked
+                    ? `linear-gradient(90deg, ${achColor}14, ${achColor}06)`
+                    : 'rgba(0,0,0,0.18)',
+                  border: ach.unlocked ? `1px solid ${achColor}35` : '1px solid rgba(255,255,255,0.05)',
+                  animation: `fadeSlideUp 0.4s ease ${0.4 + i * 0.08}s both`,
+                  position: 'relative', overflow: 'hidden',
+                  transition: 'all 0.25s ease',
+                  cursor: 'pointer'
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.boxShadow = `0 0 20px ${achColor}22`; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                  {/* Left accent bar */}
+                  {ach.unlocked && (
+                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px', background: `linear-gradient(180deg, ${achColor}, ${achColor}88)`, borderRadius: '0 3px 3px 0', boxShadow: `0 0 10px ${achColor}66` }} />
+                  )}
+
+                  {/* Progress ring icon */}
+                  <div style={{ position: 'relative', width: '38px', height: '38px', flexShrink: 0 }}>
+                    <svg width="38" height="38" style={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}>
+                      <circle cx="19" cy="19" r={ringR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
+                      <circle cx="19" cy="19" r={ringR} fill="none"
+                        stroke={achColor} strokeWidth="3" strokeLinecap="round"
+                        strokeDasharray={ringCirc}
+                        strokeDashoffset={ringCirc - (ringPct / 100) * ringCirc}
+                        style={{ transition: 'stroke-dashoffset 1.2s ease', filter: `drop-shadow(0 0 4px ${achColor})` }}
+                      />
+                    </svg>
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {ach.unlocked
+                        ? <Trophy size={14} style={{ color: achColor }} />
+                        : <Lock size={12} style={{ color: 'var(--text-muted)' }} />}
+                    </div>
+                  </div>
+
+                  {/* Text */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: '13px', color: ach.unlocked ? 'var(--text-primary)' : 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ach.title}</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '2px', lineHeight: 1.3 }}>{ach.description}</div>
+                  </div>
+
+                  {/* Right status */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
+                    {ach.unlocked
+                      ? <span style={{ padding: '2px 8px', borderRadius: '99px', background: `${achColor}20`, border: `1px solid ${achColor}40`, fontSize: '8px', color: achColor, fontFamily: 'var(--font-hud)', letterSpacing: '0.5px' }}>✓ UNLOCKED</span>
+                      : <span style={{ padding: '2px 8px', borderRadius: '99px', background: 'rgba(255,255,255,0.04)', fontSize: '8px', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)' }}>{ringPct}%</span>}
+                    <span style={{ fontSize: '9px', color: ach.unlocked ? '#eab308' : 'var(--text-muted)', fontFamily: 'var(--font-hud)', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                      <Star size={9} style={{ color: ach.unlocked ? '#eab308' : 'var(--text-muted)' }} fill={ach.unlocked ? '#eab308' : 'none'} /> +{xpReward} XP
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Challenges */}
-        <div className="glass-panel" style={{ padding: '22px', animation: 'fadeSlideUp 0.5s ease 0.42s both' }}>
-          <span className="hud-font" style={{ fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '1.5px', display: 'block', marginBottom: '14px' }}>ACTIVE HYPERFIT CHALLENGES</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {challenges.map((chal, i) => (
-              <div key={chal.id} style={{
-                padding: '12px 14px', borderRadius: '10px',
-                background: chal.active ? 'linear-gradient(90deg, rgba(234,179,8,0.07), rgba(234,179,8,0.02))' : 'rgba(0,0,0,0.12)',
-                border: chal.active ? '1px solid rgba(234,179,8,0.2)' : '1px solid rgba(255,255,255,0.04)',
-                animation: `fadeSlideUp 0.4s ease ${0.45 + i * 0.07}s both`,
-                position: 'relative', overflow: 'hidden'
-              }}>
-                {chal.active && <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px', background: 'var(--accent)', borderRadius: '0 2px 2px 0', boxShadow: '0 0 8px var(--accent-glow)' }} />}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                  <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>{chal.title}</span>
-                  <span style={{ fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)', flexShrink: 0, marginLeft: '8px' }}>{chal.daysLeft}D LEFT</span>
-                </div>
-                <p style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '8px', lineHeight: 1.4 }}>{chal.description}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <div style={{ flex: 1, height: '5px', background: 'rgba(255,255,255,0.05)', borderRadius: '99px', overflow: 'hidden' }}>
-                    <div style={{
-                      height: '100%', borderRadius: '99px',
-                      background: chal.active ? 'linear-gradient(90deg, var(--accent), var(--secondary))' : 'rgba(255,255,255,0.1)',
-                      boxShadow: chal.active ? '0 0 8px var(--accent-glow)' : 'none',
-                      width: `${chal.progress}%`, transition: 'width 1s ease'
-                    }} />
-                  </div>
-                  <span style={{ fontSize: '9px', color: chal.active ? 'var(--accent)' : 'var(--text-muted)', fontFamily: 'var(--font-hud)', minWidth: '28px', textAlign: 'right' }}>{chal.progress}%</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button onClick={() => toggleChallengeActive(chal.id)} style={{
-                    padding: '4px 10px', fontSize: '9px', borderRadius: '6px', cursor: 'pointer', fontFamily: 'var(--font-hud)', letterSpacing: '0.5px',
-                    background: chal.active ? 'rgba(6,182,212,0.12)' : 'rgba(255,255,255,0.05)',
-                    border: chal.active ? '1px solid rgba(6,182,212,0.3)' : '1px solid rgba(255,255,255,0.08)',
-                    color: chal.active ? 'var(--accent)' : 'var(--text-muted)',
-                    transition: 'all 0.2s'
-                  }}>
-                    {chal.active ? '⚡ ACTIVE' : 'ENGAGE'}
-                  </button>
-                </div>
+        {/* ═══ Challenges ═══ */}
+        <div className="glass-panel" style={{ padding: '22px', animation: 'fadeSlideUp 0.5s ease 0.42s both', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: '-25px', left: '-25px', width: '100px', height: '100px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%)', pointerEvents: 'none' }} />
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'linear-gradient(135deg, var(--accent), var(--secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 10px var(--accent-glow)' }}>
+                <Target size={12} style={{ color: 'white' }} />
               </div>
-            ))}
+              <span className="hud-font" style={{ fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '1.5px' }}>HYPERFIT CHALLENGES</span>
+            </div>
+            <span style={{ padding: '3px 8px', borderRadius: '99px', background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)', fontSize: '9px', color: 'var(--accent)', fontFamily: 'var(--font-hud)' }}>
+              {challenges.filter(c => c.active).length} ACTIVE
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {challenges.map((chal, i) => {
+              const chalColors = ['#06b6d4', '#f59e0b', '#8b5cf6'];
+              const cc = chalColors[i % chalColors.length];
+              const xpReward = [200, 350, 500][i] || 200;
+              const urgency = chal.daysLeft <= 7 ? 'rgba(239,68,68,0.15)' : 'transparent';
+
+              return (
+                <div key={chal.id} style={{
+                  padding: '16px', borderRadius: '12px',
+                  background: chal.active
+                    ? `linear-gradient(135deg, ${cc}12, ${cc}04)`
+                    : 'rgba(0,0,0,0.15)',
+                  border: chal.active ? `1px solid ${cc}30` : '1px solid rgba(255,255,255,0.05)',
+                  animation: `fadeSlideUp 0.4s ease ${0.45 + i * 0.08}s both`,
+                  position: 'relative', overflow: 'hidden',
+                  transition: 'all 0.25s ease',
+                  cursor: 'pointer'
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.boxShadow = `0 0 20px ${cc}22`; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                  {/* Left accent */}
+                  {chal.active && <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px', background: `linear-gradient(180deg, ${cc}, ${cc}88)`, borderRadius: '0 3px 3px 0', boxShadow: `0 0 10px ${cc}66` }} />}
+
+                  {/* Header row */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-primary)' }}>{chal.title}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: '99px', background: urgency, border: chal.daysLeft <= 7 ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(255,255,255,0.06)', fontSize: '9px', color: chal.daysLeft <= 7 ? '#f87171' : 'var(--text-muted)', fontFamily: 'var(--font-hud)' }}>
+                        ⏱ {chal.daysLeft}D LEFT
+                      </span>
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: 1.4 }}>{chal.description}</p>
+
+                  {/* Progress area */}
+                  <div style={{ marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                      <span style={{ fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)' }}>PROGRESS</span>
+                      <span style={{ fontSize: '11px', fontWeight: 800, color: chal.active ? cc : 'var(--text-muted)', fontFamily: 'var(--font-hud)' }}>{chal.progress}%</span>
+                    </div>
+                    <div style={{ height: '7px', background: 'rgba(255,255,255,0.05)', borderRadius: '99px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)' }}>
+                      <div style={{
+                        height: '100%', borderRadius: '99px',
+                        background: chal.active ? `linear-gradient(90deg, ${cc}, ${cc}aa)` : 'rgba(255,255,255,0.08)',
+                        boxShadow: chal.active ? `0 0 10px ${cc}66` : 'none',
+                        width: `${chal.progress}%`, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)'
+                      }} />
+                    </div>
+                  </div>
+
+                  {/* Footer: XP reward + button */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '9px', color: '#eab308', fontFamily: 'var(--font-hud)', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <Star size={10} style={{ color: '#eab308' }} fill="#eab308" /> +{xpReward} XP
+                      </span>
+                      <span style={{ width: '1px', height: '10px', background: 'rgba(255,255,255,0.1)' }} />
+                      <span style={{ fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)' }}>
+                        {chal.progress >= 100 ? '🏁 COMPLETE' : chal.progress >= 75 ? '🔥 ALMOST' : '📊 IN PROGRESS'}
+                      </span>
+                    </div>
+                    <button onClick={() => toggleChallengeActive(chal.id)} style={{
+                      padding: '5px 12px', fontSize: '9px', borderRadius: '99px', cursor: 'pointer',
+                      fontFamily: 'var(--font-hud)', letterSpacing: '0.5px', fontWeight: 700,
+                      background: chal.active ? `${cc}18` : 'rgba(255,255,255,0.05)',
+                      border: chal.active ? `1px solid ${cc}40` : '1px solid rgba(255,255,255,0.08)',
+                      color: chal.active ? cc : 'var(--text-muted)',
+                      transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px'
+                    }}
+                      onMouseEnter={e => { if (chal.active) { e.currentTarget.style.boxShadow = `0 0 12px ${cc}44`; } }}
+                      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+                    >
+                      {chal.active ? <><Zap size={10} /> ACTIVE</> : 'ENGAGE'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
