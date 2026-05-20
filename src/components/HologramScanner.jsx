@@ -216,6 +216,17 @@ export default function HologramScanner({ onAddMeal }) {
     });
   };
 
+  const handleQuickBarcodeClick = (code) => {
+    setBarcodeInput(code);
+    simulateBarcodeScan(code).then(item => {
+      runScanningAnimation({
+        ...item,
+        confidence: 100,
+        source: 'Global Barcode Registry'
+      });
+    });
+  };
+
   // Text Prompt Analyzer
   const handleTextSubmit = async (e) => {
     e.preventDefault();
@@ -717,8 +728,107 @@ export default function HologramScanner({ onAddMeal }) {
                 </button>
               </div>
 
-              <div style={{ marginTop: '20px', fontSize: '11px', color: 'var(--text-muted)' }}>
-                Demo codes: 737622440022 (Chicken), 012000000133 (Salmon), 028400070566 (Shake)
+              <div style={{ marginTop: '24px' }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>
+                  QUICK DEMO SHORTCUTS:
+                </span>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <button 
+                    type="button" 
+                    onClick={() => handleQuickBarcodeClick('737622440022')}
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.08)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      borderRadius: '6px',
+                      padding: '6px 10px',
+                      fontSize: '11px',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    🍗 Chicken Breast
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => handleQuickBarcodeClick('012000000133')}
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.08)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      borderRadius: '6px',
+                      padding: '6px 10px',
+                      fontSize: '11px',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    🐟 Salmon Fillet
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => handleQuickBarcodeClick('028400070566')}
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.08)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      borderRadius: '6px',
+                      padding: '6px 10px',
+                      fontSize: '11px',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    🥤 Protein Shake
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => handleQuickBarcodeClick('123456789012')}
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.08)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      borderRadius: '6px',
+                      padding: '6px 10px',
+                      fontSize: '11px',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    🍔 Cheeseburger
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => handleQuickBarcodeClick('011111222223')}
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.08)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      borderRadius: '6px',
+                      padding: '6px 10px',
+                      fontSize: '11px',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    🍟 French Fries
+                  </button>
+                </div>
               </div>
             </form>
           )}
