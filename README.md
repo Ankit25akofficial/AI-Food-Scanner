@@ -1,4 +1,4 @@
-# 🌌 AURA.AI // Smart Nutrition & Fitness Core
+#  Smart Nutrition & Fitness Core
 
 > **A highly modern, futuristic, and fully animated AI-powered Smart Nutrition & Fitness Tracking Web Application.** 
 > Built on a premium glassmorphic dark-theme design system with custom HSL chromatic themes, live SVG dashboards, interactive biometric logs, and neural AI vision food scanning.
