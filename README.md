@@ -4,6 +4,36 @@
 > Built on a premium glassmorphic dark-theme design system with custom HSL chromatic themes, live SVG dashboards, interactive biometric logs, and neural AI vision food scanning.
 
 ---
+<img width="1919" height="915" alt="image" src="https://github.com/user-attachments/assets/6334cf2c-71aa-4a60-8586-395edddad190" />
+
+## AI Food & Barcode Scanner
+
+<img width="1648" height="879" alt="image" src="https://github.com/user-attachments/assets/c18430dd-1b19-4259-bf3c-d8f25b97d145" />
+
+## Meal Ingestion History
+
+<img width="1655" height="846" alt="image" src="https://github.com/user-attachments/assets/bb3cee06-7b2b-433d-8452-d5baf7e7f32f" />
+
+## Nutrition & Biometric Analytics
+
+<img width="1680" height="910" alt="image" src="https://github.com/user-attachments/assets/5b780268-7e8a-4c53-9513-638ff8edb113" />
+
+## Fitness Progress Tracker
+
+<img width="1660" height="787" alt="image" src="https://github.com/user-attachments/assets/d990f603-8d7d-425f-bb8e-57c6ecf784e6" />
+
+ ## AI Coach & Biometric Reports
+
+<img width="1668" height="651" alt="image" src="https://github.com/user-attachments/assets/5bcd8b64-a1ad-4f07-8acb-b11aae00f588" />
+
+## Goal & Profile Settings
+
+<img width="1646" height="911" alt="image" src="https://github.com/user-attachments/assets/61d6881f-1cbf-4ef7-bb16-8aaaf750cf46" />
+
+ ## Neural Engine Admin Panel
+
+<img width="1674" height="678" alt="image" src="https://github.com/user-attachments/assets/56380a5d-0b3c-4592-ab05-f24bf1c7c7b5" />
+
 
 ## 🚀 Key Visual & Feature Pillars
 
